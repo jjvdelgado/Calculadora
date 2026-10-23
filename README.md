@@ -1,6 +1,6 @@
-# Calculadora
-
-Comandos para executar o codigo:
+======================================
+Comandos para iniciar a calculadora
+======================================
 
 javac *.java
-java Principal
+java Main

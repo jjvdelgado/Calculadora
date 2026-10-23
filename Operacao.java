@@ -3,6 +3,7 @@ public enum Operacao {
     SOMA("+") {
         @Override
         public int aplicar(int a, int b) {
+            // dá erro se estourar o int
             return Math.addExact(a, b);
         }
     },
@@ -24,7 +25,7 @@ public enum Operacao {
     DIVISAO("/") {
         @Override
         public int aplicar(int a, int b) {
-            // int / int já descarta a parte decimal; divisão por zero da erro
+            // já descarta a parte decimal
             return a / b;
         }
     };
@@ -39,6 +40,5 @@ public enum Operacao {
         return simbolo;
     }
 
-    // Cada constante implementa o seu próprio cálculo
     public abstract int aplicar(int a, int b);
 }

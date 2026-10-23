@@ -3,31 +3,35 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import java.awt.BorderLayout;
-import java.awt.Font;
 import java.awt.GridLayout;
 
+// herda um jframe
 public class TelaCalculadora extends JFrame {
 
-    // A tela TEM uma Calculadora (composição)
+    // a tela tem uma calculadora
     private final Calculadora calculadora = new Calculadora();
     private final JTextField visor = new JTextField("0");
 
+    // monta a janela: visor em cima e botões embaixo
     public TelaCalculadora() {
-        super("Calculadora");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        super(Estilo.TITULO);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);    // fecha o programa junto com a janela
         setLayout(new BorderLayout(5, 5));
 
-        visor.setEditable(false);
+        visor.setEditable(false);                   // só dá pra usar os botões
         visor.setHorizontalAlignment(JTextField.RIGHT);
-        visor.setFont(new Font("Arial", Font.BOLD, 30));
+        visor.setFont(Estilo.FONTE_VISOR);
+        visor.setBackground(Estilo.COR_FUNDO_VISOR);
+        visor.setForeground(Estilo.COR_TEXTO_VISOR);
 
         add(visor, BorderLayout.NORTH);
         add(criarPainelBotoes(), BorderLayout.CENTER);
 
-        setSize(300, 400);
-        setLocationRelativeTo(null);
+        setSize(Estilo.LARGURA, Estilo.ALTURA);
+        setLocationRelativeTo(null);                // centraliza na tela
     }
 
+    // cria o grid 4x4 com os botões
     private JPanel criarPainelBotoes() {
         JPanel painel = new JPanel(new GridLayout(4, 4, 5, 5));
 
@@ -54,44 +58,54 @@ public class TelaCalculadora extends JFrame {
         return painel;
     }
 
+    // botão de número
     private void adicionarDigito(JPanel painel, int digito) {
         JButton botao = new JButton(String.valueOf(digito));
-        // Cada botão "avisa" o código quando é clicado (Observer)
+
+        // quando clicar, manda o dígito pra calculadora e atualiza o visor
         botao.addActionListener(e -> {
             calculadora.digitar(digito);
             atualizarVisor();
         });
+        Estilo.estilizarBotao(botao, Estilo.COR_NUMEROS);
         painel.add(botao);
     }
 
+    // botão das operacoes
     private void adicionarOperacao(JPanel painel, Operacao operacao) {
         JButton botao = new JButton(operacao.getSimbolo());
         botao.addActionListener(e -> {
             calculadora.operar(operacao);
             atualizarVisor();
         });
+        Estilo.estilizarBotao(botao, Estilo.COR_OPERACOES);
         painel.add(botao);
     }
 
+    // botão de igual
     private void adicionarIgual(JPanel painel) {
         JButton botao = new JButton("=");
         botao.addActionListener(e -> {
             calculadora.igual();
             atualizarVisor();
-            System.out.println(calculadora.getTextoVisor());  // resultado no console
+            System.out.println(calculadora.getTextoVisor());
         });
+        Estilo.estilizarBotao(botao, Estilo.COR_IGUAL);
         painel.add(botao);
     }
 
+    // reseta tudo
     private void adicionarReset(JPanel painel) {
         JButton botao = new JButton("C");
         botao.addActionListener(e -> {
             calculadora.reset();
             atualizarVisor();
         });
+        Estilo.estilizarBotao(botao, Estilo.COR_RESET);
         painel.add(botao);
     }
 
+    // pega o texto da calculadora e coloca no visor
     private void atualizarVisor() {
         visor.setText(calculadora.getTextoVisor());
     }
